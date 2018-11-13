@@ -9,8 +9,8 @@ UMAP tutorial copied from https://umap-learn.readthedocs.io/en/latest/basic_usag
 
 
 import numpy as np
-from sklearn.datasets import load_iris, load_digits
-from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_digits # , load_iris
+# from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -57,12 +57,23 @@ digits = load_digits()
 # plt.tight_layout(h_pad=0.5, w_pad=0.01)
 
 
-digits_df = pd.DataFrame(digits.data[:,:10])
-digits_df['digit'] = pd.Series(digits.target).map(lambda x: 'Digit {}'.format(x))
+# digits_df = pd.DataFrame(digits.data[:,:10])
+
+# print(digits_df)
+# digits_df['digit'] = pd.Series(digits.target).map(lambda x: 'Digit {}'.format(x))
+
+# print(digits_df)
 # sns.pairplot(digits_df, hue='digit', palette='Spectral')
 # 
 # plt.show()
 
+print(type(digits.data))
+
+print(digits.data)
+
+print(type(digits.target))
+print(digits.target)
+print(len(digits.target))
 
 reducer = umap.UMAP(random_state=42)
 reducer.fit(digits.data)
