@@ -52,11 +52,12 @@ embeddingO = reducer.transform(dataDf.values)
 
 # print(embeddingO.shape)
 
-colourCode = np.log(dataDf["FSC-A"].values) # colour code to use for 2d plot. Column name can be changed easily to change colour of plot
+colName = "PercP-A"
+colourCode = np.log(dataDf[colName].values) # colour code to use for 2d plot. Column name can be changed easily to change colour of plot
 
 plt.scatter(embeddingO[:, 0], embeddingO[:, 1], c=colourCode, cmap='Spectral', s=5) # 
 plt.gca().set_aspect('equal', 'datalim') # set axes equal and limit data to fit into resulting box
-plt.colorbar() #(boundaries=np.arange(11)-0.5).set_ticks(np.arange(10))
-plt.title('UMAP projection of .FCS file', fontsize=16);
+plt.colorbar().set_label(colName, rotation=270, labelpad = 20) # add colour bar with label on the right
+plt.title('UMAP projection of .FCS file', fontsize=16)
 
 plt.show()
