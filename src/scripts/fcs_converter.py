@@ -18,39 +18,45 @@ pd.set_option("display.max_columns", 50)
 
 print("running fcs converter")
 
-inpFcs = "/home/mate/code/umap-katamarii/src/data/MR2016-03-28A1.0002.fcs"
+inpFcs = "/home/mate/code/umap-katamarii/src/data/MR2016-03-28A1.0002.fcs" #  full path of fcs file to analyze
 
+metaD, dataDf = fcsparser.parse(inpFcs, meta_data_only=False, reformat_meta=True) 
+# the magic one liner to convert fcs files to a dataframe. metaD is a dict with various metadata information, dataDF is a dataframe with rows as events and columns as channels.
 
+# print(type(metaD))
+print("\nChannels found:")
+for channelN in metaD["_channel_names_"]:
+  if channelN == metaD["_channel_names_"][-1]:
+    print(channelN + "\n")
+  else:
+    print(channelN + ", ", end="")
+    
+print("events found:")
+print(len(dataDf))
 
-metaDf, dataDf = fcsparser.parse(inpFcs, meta_data_only=False, reformat_meta=True)
-
-print(type(metaDf))
-print(type(dataDf))
-
-print(dataDf)
-# print()
+# print(type(dataDf))
 # 
-for metaK,metaV in metaDf.items():
-  print(metaK)
-  print(metaV)
-  print("---")
+# print(dataDf)
+# print()
+#
+# for metaK,metaV in metaD.items():
+#   print(metaK)
+#   print(metaV)
+#   print("---")
    
   
-
+# the following 3 lines are what's needed for the umap calculation. 
 reducer = umap.UMAP()
-
-reducer.fit(dataDf.values)
-
+reducer.fit(dataDf.values) # dataDf needs to be converted to a numpy array so it can be fed scikit learn. Note that all channels are used as is (no gating, no log transformation etc)
 embeddingO = reducer.transform(dataDf.values)
 
-print(embeddingO.shape)
+# print(embeddingO.shape)
 
+colourCode = np.log(dataDf["FSC-A"].values) # colour code to use for 2d plot. Column name can be changed easily to change colour of plot
 
-plt.scatter(embeddingO[:, 0], embeddingO[:, 1], c=np.log(dataDf["FSC-A"].values), cmap='Spectral', s=5)
-plt.gca().set_aspect('equal', 'datalim')
-plt.colorbar(boundaries=np.arange(11)-0.5).set_ticks(np.arange(10))
-plt.title('UMAP projection of .FCS file', fontsize=24);
+plt.scatter(embeddingO[:, 0], embeddingO[:, 1], c=colourCode, cmap='Spectral', s=5) # 
+plt.gca().set_aspect('equal', 'datalim') # set axes equal and limit data to fit into resulting box
+plt.colorbar() #(boundaries=np.arange(11)-0.5).set_ticks(np.arange(10))
+plt.title('UMAP projection of .FCS file', fontsize=16);
 
 plt.show()
-
-print("fcs converter completed")
