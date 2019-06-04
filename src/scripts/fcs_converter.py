@@ -31,8 +31,12 @@ for channelN in metaD["_channel_names_"]:
   else:
     print(channelN + ", ", end="")
     
-print("events found:")
-print(len(dataDf))
+print("events found:\n")
+for metaK, metaV in metaD.items():
+  print (metaK, ": ", metaV)
+
+print()
+print(dataDf)
 
 # print(type(dataDf))
 # 
