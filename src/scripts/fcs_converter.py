@@ -18,6 +18,7 @@ pd.set_option("display.max_columns", 50)
 
 print("running fcs converter")
 
+
 inpFcs = "/home/mate/code/umap-katamarii/src/data/MR2016-03-28A1.0002.fcs" #  full path of fcs file to analyze
 
 metaD, dataDf = fcsparser.parse(inpFcs, meta_data_only=False, reformat_meta=True) 
